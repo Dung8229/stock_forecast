@@ -8,3 +8,5 @@ scikit_learn==1.7.1
 yfinance==0.2.65
 mlflow==3.1.1
 psycopg2-binary==2.9.10
+prometheus-client==0.22.1
+

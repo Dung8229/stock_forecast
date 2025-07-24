@@ -3,7 +3,6 @@ from mlflow.tracking import MlflowClient
 import pandas as pd
 import yfinance as yf
 from datetime import datetime, timedelta
-import os, joblib
 from pathlib import Path
 from typing import Dict
 from prefect import flow, task
@@ -13,6 +12,7 @@ from src.data_preparation import process_data
 from utils.logger import get_logger
 logger = get_logger(__name__)
 from src.utils.s3_io import upload_df_to_s3, download_df_from_s3, download_joblib_from_s3
+from prometheus_client import Gauge, start_http_server
 
 STOCK_LIST = ['AAPL', 'GOOGL', 'MSFT', 'NVDA', 'AMZN', 'META']
 INFER_RAW_DIR = "data/inference/raw"
@@ -105,17 +105,20 @@ This document summarizes the processed inference stock data.
     logger.info('Successfully export inference data on s3.')
     
 @task(name="Inference")
-def run_batch_prediction(model, df_infer) -> pd.DataFrame:
-    feature_cols = df_infer.columns.difference(['Date', 'Ticker']).tolist()
+def run_batch_prediction(model, df_infer, for_evaluate=False) -> pd.DataFrame:
+    if not for_evaluate:
+        feature_cols = df_infer.columns.difference(['Date', 'Ticker']).tolist()
+    else:
+        feature_cols = df_infer.columns.difference(['Date', 'Ticker', 'Next_Close']).tolist()
     
     prediction = model.predict(df_infer[feature_cols])
-    latest = pd.DataFrame({
+    df_prediction = pd.DataFrame({
         'Date': df_infer['Date'].values,
         'Ticker': df_infer['Ticker'].values,
         'Prediction': prediction
     })
 
-    return latest
+    return df_prediction
 
 @materialize("s3://zoomcamps-bucket/data/inference/prediction")
 def export_prediction(df_prediction: pd.DataFrame):
