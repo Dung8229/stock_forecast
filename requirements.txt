@@ -1,0 +1,8 @@
+joblib==1.5.1
+numpy==2.3.1
+optuna==4.4.0
+pandas==2.3.1
+prefect==3.4.10
+prefect_aws==0.5.12
+scikit_learn==1.7.1
+yfinance==0.2.65

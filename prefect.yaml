@@ -13,7 +13,7 @@ build:
     requires: prefect-docker>=0.3.1
     image_name: stock-forecaster
     tag: mlops-zoomcamp
-    dockerfile: auto
+    dockerfile: Dockerfile
 
 # push section allows you to manage if and how this project is uploaded to remote locations
 push:
@@ -31,16 +31,24 @@ pull:
 
 # the deployments section allows you to provide configuration for deploying flows
 deployments:
-- name: null
+- name: test-managed-flow
   version: null
   tags: []
-  description: null
-  schedule: {}
-  flow_name: null
-  entrypoint: null
+  description: Daily forecasting following day's stock prices
+  # schedule: {}
+  schedule:
+      # cron: "0 0 * * *"  # 7h
+      cron: "*/5 * * * *" # every 5 minutes
+      timezone: "Asia/Ho_Chi_Minh"
+  flow_name: Inference Flow
+  entrypoint: src/inference.py:inference_flow
   parameters: {}
   work_pool:
-    name: null
+    name: zoomcamps-pool
     work_queue_name: null
     job_variables:
       image: '{{ build_image.image }}'
+      job_variables:
+        env:
+          AWS_ACCESS_KEY_ID: "{{ $AWS_ACCESS_KEY_ID }}"
+          AWS_SECRET_ACCESS_KEY: "{{ $AWS_SECRET_ACCESS_KEY }}"
