@@ -9,7 +9,7 @@ from prefect import flow, task
 from prefect.assets import materialize
 from prefect.artifacts import create_table_artifact, create_markdown_artifact
 from src.data_preparation import process_data
-from utils.logger import get_logger
+from src.utils.logger import get_logger
 logger = get_logger(__name__)
 from src.utils.s3_io import upload_df_to_s3, download_df_from_s3, download_joblib_from_s3
 from prometheus_client import Gauge, start_http_server

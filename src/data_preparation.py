@@ -2,7 +2,7 @@ import yfinance as yf
 import pandas as pd
 from datetime import datetime
 import os
-from utils.logger import get_logger
+from src.utils.logger import get_logger
 logger = get_logger(__name__)
 from prefect import flow, task
 from prefect.assets import materialize
