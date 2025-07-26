@@ -33,17 +33,3 @@ deployments:
       env:
         AWS_ACCESS_KEY_ID: "{{ $AWS_ACCESS_KEY_ID }}"
         AWS_SECRET_ACCESS_KEY: "{{ $AWS_SECRET_ACCESS_KEY }}"
-- name: daily-model-evaluator
-  description: Daily evaluation of the current model
-  schedule:
-      cron: "0 5 * * *"
-      timezone: "Asia/Ho_Chi_Minh"
-  flow_name: Evaluate Current Model
-  entrypoint: src/models/evaluate.py:evaluate_model_flow
-  work_pool:
-    name: zoomcamps-pool
-    work_queue_name: null
-    job_variables:
-      env:
-        AWS_ACCESS_KEY_ID: "{{ $AWS_ACCESS_KEY_ID }}"
-        AWS_SECRET_ACCESS_KEY: "{{ $AWS_SECRET_ACCESS_KEY }}"

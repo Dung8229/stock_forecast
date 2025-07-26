@@ -1,117 +1,141 @@
-PYTHONPATH=. python src/data_preparation.py
-PYTHONPATH=. python src/models/train.py
-PYTHONPATH=. python src/models/register.py
-PYTHONPATH=. python src/inference.py
+# Stock Forecasting Project
 
-# Gold Price Forecasting - Final Project (MLOps Zoomcamp)
+## 🚀 Problem Description
 
-Welcome to the final project of the **MLOps Zoomcamp** – a complete end-to-end MLOps pipeline to forecast the next day's gold price. This repository implements modern MLOps practices using Prefect, MLflow, AWS, and more.
-
-> 🔗 **Project repository:** [github.com/Dung8229/stock\_forecast](https://github.com/Dung8229/stock_forecast/tree/master)
+In financial markets, predicting stock price trends is a valuable yet challenging task due to high volatility and noise. This project aims to build an end-to-end machine learning pipeline to forecast stock prices using historical data. The goal is to automate the forecasting process, from data ingestion to model training, registration, deployment, and monitoring, following modern MLOps practices. The project focuses on simplicity in modeling (using Exponential Moving Average) to highlight the MLOps lifecycle rather than complex model performance.
 
 ---
 
-## 📌 Project Overview
+## ☁️ Cloud Infrastructure
 
-This project forecasts the **next day's closing price** of gold using a simple machine learning model with **Exponential Moving Average (EMA)** as a feature. The emphasis is on building a robust and automated MLOps pipeline.
-
----
-
-## 🔧 Key Components
-
-### ✅ MLflow for Experiment Tracking
-
-* Tracks experiments, parameters, and metrics.
-* Registers the best model automatically into the MLflow Model Registry.
-
-### ✅ Prefect for Workflow Orchestration
-
-* Modularized tasks (data loading, feature engineering, training, evaluating, registering).
-* Prefect Cloud used for deployment.
-* Scheduled to run daily.
-* Flow stores:
-
-  * Data & model artifacts → **Amazon S3**
-  * Run metadata → **PostgreSQL (Neon remote)**
-
-### ✅ Monitoring with Grafana
-
-* RMSE is monitored via Grafana dashboard.
-* Automatic alerts sent (e.g., when RMSE drops below a threshold).
-
-### ✅ Testing
-
-* Unit tests implemented with **pytest**.
-* Includes tests for data processing, model logic, and pipeline integrity.
-
-### ✅ Makefile for Automation
-
-* Common commands scripted for easy development and CI/CD tasks:
-
-  * `make train`
-  * `make test`
-  * `make deploy-flow`
+* The project uses S3 bucket to store both data and model artifacts.
+* MLflow backend is hosted on Neon.tech (a remote PostgreSQL database).
+* Prefect deployments and flows are configured to run daily in the cloud.
 
 ---
 
-## 📦 Folder Structure (planned)
+## 🎯 Experiment Tracking and Model Registry
+
+* **MLflow** is used for:
+
+  * **Tracking experiments**: Log RMSE metrics, parameters, and versions.
+  * **Model registry**: The best-performing model can be registered and versioned.
+
+* MLflow uses Neon.tech as the remote backend.
+
+---
+
+## 🔁 Workflow Orchestration
+
+* **Prefect 2.0** is used as the orchestration tool.
+* The flow includes the following tasks:
+
+  * Data preparation
+  * Model training
+  * Model registration
+  * Daily inference
+  * Model evaluation (for monitoring)
+
+* The inference flow is deployed via `prefect.yaml`
+
+---
+
+## 📦 Model Deployment
+
+* The trained model is registered with MLflow, but not deployed as a container or REST API.
+* Instead, model inference is performed by a Prefect deployment, scheduled to run daily.
+* This automated flow pulls the latest model from the MLflow registry and generates forecasts for the upcoming day.
+* All secrets and environment variables (e.g., AWS credentials) are managed through Prefect job variables
+
+---
+
+## 📈 Model Monitoring
+
+* RMSE on test data is computed and pushed to Prometheus Pushgateway.
+* Grafana dashboards are set up to visualize metrics, hosted via Docker Compose.
+* To start the monitoring system:
+```bash
+cd monitor
+docker compose up
+```
+* Then send the latest RMSE to Prometheus using:
+```bash
+make evaluate
+```
+* Monitoring logic checks if RMSE exceeds a threshold → send an alert to dashboard.
+
+---
+
+## 📦 Reproducibility
+
+* The entire pipeline can be reproduced using:
+
+  * A clear `Makefile`
+  * `requirements.txt`
+  * Python scripts organized in a `src/` directory
+
+---
+
+## ✅ Best Practices
+
+* ✅ **Unit tests**: Some key functions are covered with `pytest`
+* ✅ **Makefile**: Automates common tasks like training, inference, cleaning
+* ✅ **Linter**: `flake8` with `black` used for formatting
+* ⚠️ **Pre-commit hooks**: Not yet implemented
+* ⚠️ **Integration test**: Not yet implemented
+* ⚠️ **CI/CD pipeline**: Not yet implemented
+
+---
+
+## 🛠 Project Structure
 
 ```
 stock_forecast/
-├── data/               # Sample & test data
-├── notebooks/          # Experimentation & EDA
+├── data/                        # input and output datasets
 ├── src/
-│   ├── features/       # Feature engineering scripts
-│   ├── models/         # Training, prediction, evaluation
-│   ├── pipeline/       # Prefect tasks and flows
-├── tests/              # Pytest test cases
-├── Makefile
-├── prefect.yaml        # Deployment spec
-├── requirements.txt
-├── README.md
+│   ├── data_preparation.py     # prepare features with EMA
+│   ├── models/
+│   │   ├── train.py            # train model
+│   │   └── register.py         # register model to MLflow
+│   └── inference.py            # run predictions
+├── prefect/                    # orchestration flows
+├── Dockerfile                  # model deployment container
+├── Makefile                    # workflow automation
+├── requirements.txt            # dependencies
+├── tests/                      # unit tests
+└── README.md                   # you are here
 ```
 
 ---
 
-## 🚀 Features Planned
+## 🔄 Makefile Usage
 
-* [x] Daily auto-prediction via Prefect Cloud
-* [x] MLflow model registry integration
-* [x] Store artifacts on S3
-* [x] Track runs on Neon (PostgreSQL)
-* [x] Send alerts via Grafana
-* [x] CI-style test with pytest
-* [ ] Docker containerization for full reproducibility
-* [ ] Kubernetes deployment (optional stretch goal)
-
----
-
-## 🧠 Tech Stack
-
-* **MLflow**
-* **Prefect 2.0 (Cloud)**
-* **Amazon S3**
-* **Neon PostgreSQL**
-* **Grafana**
-* **pytest**
-* **Makefile**
-* *(Possible upcoming: Docker, Kubernetes)*
+```bash
+make help           # Show available commands
+make setup          # Create virtualenv and install requirements
+make prepare        # Run data preparation
+make train          # Train the model
+make register       # Register model to MLflow
+make predict        # Run inference
+make all            # Run full pipeline
+make clean          # Delete cache and virtualenv
+```
 
 ---
 
-## 📅 Flow Schedule & Automation
+## 🧪 Run Locally
 
-* Trigger: Daily @ 6PM
-* Action: Predict gold closing price for the next trading day.
-* Storage: Prefect stores data in S3, and metadata in Neon.
-* Monitoring: Grafana watches the metrics, sends alerts.
+```bash
+# Clone the repository
+$ git clone https://github.com/Dung8229/stock_forecast.git
+$ cd stock_forecast
 
----
+# Create environment & install dependencies
+$ make setup
 
-## 📬 Contact
+# Run full pipeline
+$ make all
 
-For questions or feedback, please open an issue or reach out via GitHub.
-
----
-
-> 🚧 **Note**: This project is still in development. Some components (e.g., Docker, K8s) are under construction.
+# Run inference
+$ make predict
+```

@@ -7,6 +7,7 @@ logger = get_logger(__name__)
 MLFLOW_TRACKING_URI = "postgresql://neondb_owner:npg_x1OqnLgvpmZ9@ep-empty-dew-a1d7ga54-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require"
 REGISTER_NAME = "stock-ema-model"
 
+
 @flow(name="Best Model Register Flow")
 def register_best_model_flow():
     mlflow.set_tracking_uri(MLFLOW_TRACKING_URI)
@@ -20,7 +21,7 @@ def register_best_model_flow():
         experiment_ids=[experiment.experiment_id],
         filter_string="metrics.rmse < 9999",
         order_by=["metrics.rmse ASC"],
-        max_results=1
+        max_results=1,
     )
 
     best_run = runs[0]
@@ -30,8 +31,9 @@ def register_best_model_flow():
 
     logger.info(f"Registering best model from run_id={run_id} with RMSE={rmse:.4f}")
     result = mlflow.register_model(model_uri=model_uri, name=REGISTER_NAME)
-    
+
     logger.info(f"Model registered: name={result.name}, version={result.version}")
-    
-if __name__ == '__main__':
-  register_best_model_flow()
+
+
+if __name__ == "__main__":
+    register_best_model_flow()

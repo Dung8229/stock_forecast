@@ -440,3 +440,32 @@
 2025-07-25 23:16:35 | __main__ | INFO | Pushed RMSE 22 to Pushgateway
 2025-07-25 23:18:30 | __main__ | INFO | Pushed RMSE 27 to Pushgateway
 2025-07-25 23:43:04 | __main__ | INFO | Pushed RMSE 25 to Pushgateway
+2025-07-26 09:25:26 | __main__ | INFO | Pushed RMSE 26 to Pushgateway
+2025-07-26 09:28:26 | __main__ | INFO | Pushed RMSE 28 to Pushgateway
+2025-07-26 09:30:21 | __main__ | INFO | Pushed RMSE 23 to Pushgateway
+2025-07-26 09:32:09 | src.data_preparation | INFO | Starting data preparation flow...
+2025-07-26 09:32:09 | src.data_preparation | INFO | Loading stock data from 2025-01-01 to 2025-07-26 for 6 stocks.
+2025-07-26 09:32:12 | src.data_preparation | INFO | Uploaded AAPL data to S3: data/train/raw/AAPL.csv
+2025-07-26 09:32:12 | src.data_preparation | INFO | Uploaded GOOGL data to S3: data/train/raw/GOOGL.csv
+2025-07-26 09:32:13 | src.data_preparation | INFO | Uploaded MSFT data to S3: data/train/raw/MSFT.csv
+2025-07-26 09:32:13 | src.data_preparation | INFO | Uploaded NVDA data to S3: data/train/raw/NVDA.csv
+2025-07-26 09:32:14 | src.data_preparation | INFO | Uploaded AMZN data to S3: data/train/raw/AMZN.csv
+2025-07-26 09:32:14 | src.data_preparation | INFO | Uploaded META data to S3: data/train/raw/META.csv
+2025-07-26 09:32:16 | src.data_preparation | INFO | Uploaded processed train/test sets to S3
+2025-07-26 09:32:17 | src.data_preparation | INFO | Data preparation flow completed successfully.
+2025-07-26 09:32:19 | src.models.train | INFO | Successfully downloaded train and test df from S3 Bucket.
+2025-07-26 11:47:12 | src.inference | INFO | Successfully logging model from registry.
+2025-07-26 11:47:12 | __main__ | INFO | Pushed RMSE 19.277636999478375 to Pushgateway
+2025-07-26 11:59:05 | __main__ | INFO | Pushed RMSE 25 to Pushgateway
+2025-07-26 22:01:10 | src.models.train | INFO | Successfully downloaded train and test df from S3 Bucket.
+2025-07-26 22:01:10 | src.inference | INFO | Loading stock data at 2025-07-25 for         6 stocks.
+2025-07-26 22:01:14 | src.inference | INFO | Uploaded AAPL data to S3:             data/inference/raw/AAPL.csv
+2025-07-26 22:01:14 | src.inference | INFO | Uploaded GOOGL data to S3:             data/inference/raw/GOOGL.csv
+2025-07-26 22:01:15 | src.inference | INFO | Uploaded MSFT data to S3:             data/inference/raw/MSFT.csv
+2025-07-26 22:01:15 | src.inference | INFO | Uploaded NVDA data to S3:             data/inference/raw/NVDA.csv
+2025-07-26 22:01:16 | src.inference | INFO | Uploaded AMZN data to S3:             data/inference/raw/AMZN.csv
+2025-07-26 22:01:16 | src.inference | INFO | Uploaded META data to S3:             data/inference/raw/META.csv
+2025-07-26 22:12:53 | src.models.train | INFO | Successfully downloaded train and test df from S3 Bucket.
+2025-07-26 22:17:17 | src.models.train | INFO | Starting Optuna optimization with 2 trials...
+2025-07-26 22:18:47 | src.models.train | INFO | Starting Optuna optimization with 2 trials...
+2025-07-26 22:19:09 | src.models.train | INFO | Optuna optimization completed.
