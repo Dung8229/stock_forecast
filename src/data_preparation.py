@@ -72,7 +72,7 @@ This document summarizes the raw stock data loaded from Yahoo Finance.
 @task(name="Process Stock Data")
 def process_data(
     all_raw_data: dict,
-    encoder: None,
+    encoder=None,
     ema_windows=[5, 10, 20],
     for_inference=False,
 ):
@@ -102,9 +102,11 @@ def process_data(
         df_all = df_all.dropna().reset_index(drop=True)
         df_test = df_all.groupby("Ticker").tail(30)
         df_train = df_all.drop(df_test.index)
-        return (df_train.reset_index(drop=True),)
-    df_test.reset_index(drop=True),
-    encoder
+        return (
+            df_train.reset_index(drop=True),
+            df_test.reset_index(drop=True),
+            encoder,
+        )
 
     return df_all.reset_index(drop=True), encoder
 

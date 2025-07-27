@@ -1,4 +1,4 @@
-.PHONY: help setup venv install run forecast clean
+.PHONY: help setup install prepare train register predict evaluate test format all clean
 
 VENV ?= .venv
 PYTHON = $(VENV)/bin/python
@@ -10,11 +10,14 @@ help:
 	@echo ""
 	@echo "  setup       Create virtual environment and install dependencies"
 	@echo "  install     Install dependencies from requirements.txt"
-	@echo "  prepare     Run data preparation script (data_preparation.py)"
-	@echo "  train       Train model (train.py)"
-	@echo "  register    Register model to MLflow (register.py)"
-	@echo "  predict     Run inference (inference.py)"
-	@echo "  all         Run full pipeline: prepare → train → register → predict"
+	@echo "  prepare     Run data preparation script"
+	@echo "  train       Train the model"
+	@echo "  register    Register best model to MLflow"
+	@echo "  inference   Run inference with latest model"
+	@echo "  evaluate    Send RMSE to Grafana via Prometheus"
+	@echo "  test        Run unit tests with pytest"
+	@echo "  format      Format code with black and check style with flake8"
+	@echo "  all         Run the full pipeline: prepare → train → register → predict"
 	@echo "  clean       Remove virtualenv and Python cache files"
 	@echo ""
 
@@ -37,11 +40,18 @@ train:
 register:
 	PYTHONPATH=. $(PYTHON) src/models/register.py
 
-predict:
+inference:
 	PYTHONPATH=. $(PYTHON) src/inference.py
 
 evaluate:
-	PYTHONPATH=. $(PYTHON) src/models/evaluation.py
+	PYTHONPATH=. $(PYTHON) src/models/evaluate.py
+
+test:
+	PYTHONPATH=. $(PYTHON) -m pytest
+
+format:
+	PYTHONPATH=. $(PYTHON) -m black src
+	PYTHONPATH=. $(PYTHON) -m flake8 src
 
 all: prepare train register predict
 
@@ -49,4 +59,3 @@ clean:
 	rm -rf $(VENV)
 	find . -type f -name "*.pyc" -delete
 	find . -type d -name "__pycache__" -exec rm -rf {} +
-

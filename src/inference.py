@@ -134,7 +134,6 @@ def run_batch_prediction(model, df_infer, for_evaluate=False) -> pd.DataFrame:
     prediction = model.predict(df_infer[feature_cols])
     df_prediction = pd.DataFrame(
         {
-            "Date": df_infer["Date"].values,
             "Ticker": df_infer["Ticker"].values,
             "Prediction": prediction,
         }
@@ -149,7 +148,6 @@ def export_prediction(df_prediction: pd.DataFrame):
     upload_df_to_s3(df_prediction, s3_path=s3_path)
 
     df_prediction_copy = df_prediction.copy()
-    df_prediction_copy["Date"] = df_prediction_copy["Date"].astype(str)
     create_table_artifact(
         key="prediction",
         table=df_prediction_copy.to_dict(orient="records"),

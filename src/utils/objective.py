@@ -6,8 +6,6 @@ from sklearn.metrics import root_mean_squared_error
 # Yes I know .autolog() exists, but it logs too much redundant informations
 def create_objective(train_df, test_df, feature_cols, target_col):
     def objective(params):
-        # mlflow.set_tracking_uri(MLFLOW_DB_URI)
-        # mlflow.set_experiment("stock_prediction")
 
         with mlflow.start_run(nested=True):
             mlflow.set_tag("model", "random_forest")

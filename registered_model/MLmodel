@@ -1,4 +1,4 @@
-artifact_path: s3://zoomcamps-bucket/mlflow/zoomcamps-2/models/m-8ce2807f4069444d9759aa8eaa682604/artifacts
+artifact_path: s3://zoomcamps-bucket/mlflow/zoomcamps-7/models/m-4801cb52bd7e4be0b5826d9b27b4f19e/artifacts
 flavors:
   python_function:
     env:
@@ -7,19 +7,19 @@ flavors:
     loader_module: mlflow.sklearn
     model_path: model.pkl
     predict_fn: predict
-    python_version: 3.12.11
+    python_version: 3.12.8
   sklearn:
     code: null
     pickled_model: model.pkl
     serialization_format: cloudpickle
-    sklearn_version: 1.7.0
+    sklearn_version: 1.7.1
 is_signature_from_type_hint: false
 mlflow_version: 3.1.1
-model_id: m-8ce2807f4069444d9759aa8eaa682604
-model_size_bytes: 255155
-model_uuid: m-8ce2807f4069444d9759aa8eaa682604
+model_id: m-4801cb52bd7e4be0b5826d9b27b4f19e
+model_size_bytes: 1222857
+model_uuid: m-4801cb52bd7e4be0b5826d9b27b4f19e
 prompts: null
-run_id: b6d622ce0237439aa9b6fc383a67cea1
+run_id: 8572e77b545149929e1523f8de772b93
 saved_input_example_info:
   artifact_path: input_example.json
   serving_input_path: serving_input_example.json
@@ -35,4 +35,4 @@ signature:
   outputs: '[{"type": "double", "required": true}]'
   params: null
 type_hint_from_example: false
-utc_time_created: '2025-07-23 16:19:38.340651'
+utc_time_created: '2025-07-27 10:29:05.947834'

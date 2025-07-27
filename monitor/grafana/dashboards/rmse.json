@@ -87,8 +87,8 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
-        "w": 12,
+        "h": 10,
+        "w": 24,
         "x": 0,
         "y": 0
       },
@@ -147,12 +147,12 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-4d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "browser",
   "title": "rmse dashboard",
   "uid": "3954d608-8e0d-4dbc-80fa-d3273cce82a5",
-  "version": 4
+  "version": 6
 }

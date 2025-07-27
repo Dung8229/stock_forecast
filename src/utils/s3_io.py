@@ -1,6 +1,7 @@
 import pandas as pd
 from io import BytesIO
 from prefect_aws.s3 import S3Bucket
+# from datetime import datetime, timedelta
 import joblib
 
 
@@ -38,7 +39,8 @@ def download_joblib_from_s3(remote_path: str):
 
 
 # if __name__ == "__main__":
-#     df = pd.read_csv('data/inference/prediction/latest.csv')
-#     upload_df_to_s3(df, s3_path="data/inference/prediction/latest.csv")
-#     df2 = download_df_from_s3("data/inference/prediction/latest.csv")
+#     today = datetime.today()
+#     yesterday = today - timedelta(days=0)
+#     print(f"Downloading data from S3 for {yesterday.strftime("%Y-%m-%d")}...")
+#     df2 = download_df_from_s3(f"data/inference/prediction/{yesterday.strftime("%Y-%m-%d")}.csv")
 #     print(df2)

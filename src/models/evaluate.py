@@ -50,7 +50,7 @@ def alert_triggered():
 
 if __name__ == "__main__":
     # Uncomment the line below to trigger an alert
-    alert_triggered()
+    # alert_triggered()
 
     # Comment the line below when trying to trigger an alert
-    # evaluate_model_flow()
+    evaluate_model_flow()
